@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حاسبة مكافأة نهاية الخدمة - نظام العمل السعودي</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap');
+*{font-family:'Tajawal',sans-serif;box-sizing:border-box}
+body{margin:0;background:#f6f7f2;color:#111}
+.wrap{max-width:480px;margin:0 auto;padding:20px}
+.card{background:#fff;border-radius:24px;border:1px solid #e5e5e5;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.05);margin-top:20px}
+h1{font-size:28px;margin:0 0 8px;color:#0a5c36}
+label{font-size:14px;font-weight:700;display:block;margin:14px 0 6px}
+input,select{width:100%;height:52px;border-radius:14px;border:1px solid #ddd;background:#fcfdf8;padding:0 14px;font-size:16px;font-weight:700;outline:none}
+input:focus,select:focus{border-color:#0a5c36;box-shadow:0 0 0 4px rgba(10,92,54,.1)}
+.row{display:flex;gap:10px}
+.row>div{flex:1}
+.btn{width:100%;height:54px;background:#0a5c36;color:#fff;border:none;border-radius:16px;font-size:16px;font-weight:800;margin-top:18px;cursor:pointer}
+.result{background:#0a5c36;color:#fff;border-radius:20px;padding:18px;margin-top:18px;text-align:center}
+.result .num{font-size:34px;font-weight:800;margin-top:6px}
+.small{font-size:12px;color:#666;margin-top:10px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>حاسبة مكافأة<br>نهاية الخدمة</h1>
+<p class="small">حسب نظام العمل السعودي المادة 84 و 85. أول 5 سنوات نصف راتب، وبعدها راتب كامل.</p>
+
+<div class="card">
+<label>الراتب الأخير شامل البدلات</label>
+<input id="salary" type="number" value="8000">
+
+<div class="row">
+<div><label>سنوات الخدمة</label><input id="years" type="number" value="6"></div>
+<div><label>الشهور (0-11)</label><input id="months" type="number" value="3" min="0" max="11"></div>
+</div>
+
+<label>سبب انتهاء العقد</label>
+<select id="reason">
+<option value="1">انتهاء عقد / فصل من الشركة - 100%</option>
+<option value="0">استقالة قبل سنتين - 0%</option>
+<option value="0.333">استقالة من 2 إلى 5 سنوات - 33%</option>
+<option value="0.666">استقالة من 5 إلى 10 سنوات - 66%</option>
+<option value="1">استقالة بعد 10 سنوات - 100%</option>
+</select>
+
+<button class="btn" onclick="calc()">احسب الآن</button>
+
+<div id="out" class="result" style="display:none">
+<div>المكافأة المستحقة</div>
+<div class="num" id="final">0 ر.س</div>
+<div id="detail" style="font-size:12px;margin-top:8px;opacity:.9"></div>
+</div>
+<p class="small">تنبيه: هذه حاسبة استرشادية فقط.</p>
+</div>
+</div>
+<script>
+function calc(){
+let s=parseFloat(document.getElementById('salary').value)||0;
+let y=parseFloat(document.getElementById('years').value)||0;
+let m=parseFloat(document.getElementById('months').value)||0;
+let f=parseFloat(document.getElementById('reason').value);
+let total=y + m/12;
+let base=0;
+if(total<=5) base=(s/2)*total;
+else base=(s/2)*5 + s*(total-5);
+let final=base*f;
+document.getElementById('out').style.display='block';
+document.getElementById('final').innerText=final.toFixed(2)+' ر.س';
+document.getElementById('detail').innerText='المدة: '+total.toFixed(2)+' سنة | قبل نسبة الاستقالة: '+base.toFixed(2)+' ر.س';
+}
+</script>
+</body>
+</html>
